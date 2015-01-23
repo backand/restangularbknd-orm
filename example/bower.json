@@ -12,6 +12,7 @@
     "angular-mocks": "latest",
 	"html5-boilerplate": "latest",
     "restangular": "latest",
+    "ng-file-upload": "latest",
 	"restangularbknd-orm": "latest"
   }
 }

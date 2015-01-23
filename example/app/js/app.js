@@ -3,9 +3,11 @@
 // Declare app level module which depends on views, and components
 var myApp = angular.module('myApp', [
   'ngRoute',
+  'angularFileUpload',
   'myApp.authorization',
   'myApp.list',
   'myApp.item',
+  'myApp.files',
   'restangularbknd-orm'
 ])
 .config(['$routeProvider', function ($routeProvider) {

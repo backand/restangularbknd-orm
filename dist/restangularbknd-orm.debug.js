@@ -5,6 +5,8 @@
  */
 (function() {
     'use strict';
+
+
     angular.module('restangularbknd-orm', ['restangular', 'ngCookies'])
 
     .factory('RestangularBknd', ['Restangular', 'CONSTS',
@@ -36,6 +38,8 @@
                 }
             }
         }
+
+
     ])
     .constant('CONSTS', { backandUrl: 'https://api.backand.com:8080' });
 })();

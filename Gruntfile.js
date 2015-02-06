@@ -28,10 +28,10 @@ module.exports = function (grunt) {
                     separator: ';'
                 },
                 src: [
-                'src/restangularBknd.js',
+                'src/restangularbknd.js',
                 'src/auth.js',
-                'src/session.js'
-
+                'src/session.js',
+                'src/angularfileuploadbknd.js'
                 ],
                 dest: 'dist/<%= pkg.name %>.debug.js'
             }

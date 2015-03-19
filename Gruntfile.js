@@ -1,14 +1,11 @@
 module.exports = function (grunt) {
-
-
-
-    // Project configuration.
+   // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-
+        today: grunt.template.today('yyyy-mm-dd'),
         uglify: {
             options: {
-                banner: '/*\n <%= pkg.name %> v<%= pkg.version %> \n (coffee) Copyright 2014 Backand All rights reserved. https://backand.com \n License: MIT\n */\n'
+                banner: '/*\n* Angular SDK to use with backand \n* @version <%= pkg.version %> - <%= today %>\n* @link https://backand.com \n* @author Itay Herskovits \n* @license MIT License, http://www.opensource.org/licenses/MIT\n */\n'
             },
             js: {
                 src: 'dist/<%= pkg.name %>.debug.js',
@@ -20,7 +17,7 @@ module.exports = function (grunt) {
 
         concat: {
             options: {
-                banner: '/*\n <%= pkg.name %> v<%= pkg.version %> \n (coffee) Copyright 2014 Backand All rights reserved. https://backand.com \n License: MIT\n */\n'
+                banner: '/*\n* Angular SDK to use with backand \n* @version <%= pkg.version %> - <%= today %>\n* @link https://backand.com \n* @author Itay Herskovits \n* @license MIT License, http://www.opensource.org/licenses/MIT\n */\n'
             },
 
             js: {
@@ -28,10 +25,7 @@ module.exports = function (grunt) {
                     separator: ';'
                 },
                 src: [
-                'src/restangularbknd.js',
-                'src/auth.js',
-                'src/session.js',
-                'src/angularfileuploadbknd.js'
+                'src/backand.js',
                 ],
                 dest: 'dist/<%= pkg.name %>.debug.js'
             }

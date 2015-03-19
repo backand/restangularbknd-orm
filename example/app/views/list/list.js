@@ -13,7 +13,8 @@ angular.module('myApp.list', ['ngRoute'])
 
     $scope.fetchList = function () {
         $scope.result = "Connecting...";
-        Restangular.all('Employees').getList({ pageSize: 5, filter: JSON.stringify([{ fieldName: "First_Name", operator: "contains", value: "j" }]) }).then(function (Employees) {
+        Restangular.all('Employees').getList({ pageSize: 5, filter: JSON.stringify([{ fieldName: "First_Name", operator: "contains", value: "j" }]) })
+        .then(function (Employees) {
             $scope.result = "\n" + JSON.stringify(Employees, null, "\t");
         }, function (response) {
             $scope.handleError(response);

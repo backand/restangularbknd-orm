@@ -12,10 +12,9 @@
     <title>Backand Services</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="bower_components/html5-boilerplate/css/normalize.css">
-    <link rel="stylesheet" href="bower_components/html5-boilerplate/css/main.css">
+    <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
+    <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
     <link rel="stylesheet" href="app.css">
-    <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
 </head>
 
 <body>
@@ -37,10 +36,6 @@
     <h1>Restangular with Backand ORM</h1>
 
     <div ng-view></div>
-
-
-
-
     <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
@@ -50,13 +45,16 @@
     <script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
     <script src="bower_components/restangular/dist/restangular.min.js"></script>
     <script src="bower_components/lodash/dist/lodash.underscore.min.js"></script>
-    <script src="bower_components/restangularbknd-orm/dist/restangularbknd-orm.debug.js"></script>
+    <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+    <!--<script src="bower_components/restangularbknd-orm/dist/restangularbknd-orm.debug.js"></script>-->
 
+    <script src="interceptors/httpInterceptor.js"></script>
     <script src="views/authorization/authorization.js"></script>
     <script src="views/list/list.js"></script>
     <script src="views/item/item.js"></script>
     <script src="views/files/files.js"></script>
     <script src="js/app.js"></script>
+    <script src="/restangularbknd-orm/src/backand.js"></script>
 </body>
 
 </html>

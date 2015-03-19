@@ -8,17 +8,17 @@ angular.module('myApp.files', ['ngRoute'])
             templateUrl: 'views/files/files.html',
             controller: 'filesCtrl'
         });
-}])
+    }])
 
 
-.controller('filesCtrl', ['$scope', 'SessionService', 'AngularFileUploadBkndService',
-    function ($scope, SessionService, $fileupload) {
-        $scope.fileSelected = function ($files, $event) {
+.controller('filesCtrl', ['$scope','BackandUtils',
+    function ($scope, BackandUtils) {
+        $scope.fileSelected = function ($files) {
             $scope.val = '';
             $scope.errorMessage = '';
             for (var i = 0; i < $files.length; i++) {
                 var file = $files[i];
-                $fileupload.uploadFile(file, "Employees", "Attachments", SessionService.getAuthHeader())
+                BackandUtils.uploadFile(file, "Employees", "Attachments")
                     .then(function (result) {
                         if (result.success) {
                             $scope.val = result.url;
@@ -28,4 +28,4 @@ angular.module('myApp.files', ['ngRoute'])
                     });
             }
         }
-                }]);
+    }]);

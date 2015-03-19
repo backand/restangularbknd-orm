@@ -9,8 +9,7 @@ angular.module('myApp.authorization', ['ngRoute'])
   });
 }])
 
-
-.controller('authorizationCtrl', ['$scope', 'AuthService', 'SessionService', '$log', 'RestangularBknd', function ($scope, AuthService, SessionService, $log, RestangularBknd) {
+.controller('authorizationCtrl', ['$scope', 'Backand','BackandORM', '$log','$cookieStore', function ($scope, Backand, BackandORM, $log, $cookieStore) {
 
     $scope.user = "guest@backand.com";
     $scope.password = "guest1234";
@@ -18,27 +17,26 @@ angular.module('myApp.authorization', ['ngRoute'])
 
     $scope.signIn = function () {
         console.log("authentication");
-        
-        $scope.result = "connecting...";
-        AuthService.signIn($scope.user, $scope.password, $scope.appName)
-        .success(function (data, status, headers, config) {
-            SessionService.setCredentials(data);
-            $scope.result = "authenticated";
-            RestangularBknd.setCredentials(SessionService.getAuthHeader());
-        })
-        .error(function (data, status, headers, config) {
-            $log.debug("authentication error", data, status, headers, config);
-            $scope.result = "failed to authenticate";
 
-        });
-    
+        $scope.result = "connecting...";
+        Backand.signin($scope.user, $scope.password, $scope.appName)
+        .then(
+            function (token) {
+                $cookieStore.put(Backand.configuration.tokenName, token);
+                BackandORM.setCredentials(token);
+                BackandORM.config();
+                $scope.result = "authenticated";
+            },
+            function (data, status, headers, config) {
+                $log.debug("authentication error", data, status, headers, config);
+                $scope.result = "failed to authenticate";
+
+            }
+        );
+
     };
 
-
-
     $scope.signOut = function () {
-        SessionService.clearCredentials();
-        RestangularBknd.clearCredentials();
         $scope.result = null;
     };
 

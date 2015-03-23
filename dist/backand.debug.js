@@ -1,6 +1,6 @@
 /*
 * Angular SDK to use with backand 
-* @version 1.5.1 - 2015-02-13
+* @version 1.5.1 - 2015-03-22
 * @link https://backand.com 
 * @author Itay Herskovits 
 * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -45,6 +45,7 @@
 
                     function signin(username, password, appName) {
                         var deferred = $q.defer();
+                        token.remove();
                         $http({
                             method: 'POST',
                             url: config.apiUrl + '/token',
@@ -54,9 +55,6 @@
                                 angular.forEach(obj, function(value, key){
                                     str.push(encodeURIComponent(key) + "=" + encodeURIComponent(value));
                                 })
-                                //for (var p in obj) {
-                                //  str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                                //}
                                 return str.join("&");
                             },
                             data: {
@@ -67,9 +65,18 @@
                             }
                         })
                             .success(function (data) {
-                                config.token = 'bearer ' + data.access_token;
-                                setDefaultHeader(config.token);
-                                deferred.resolve(config.token);
+                                if(angular.isDefined(data) && data != null){
+                                    if(angular.isDefined(data.access_token)) {
+                                        config.token = 'bearer ' + data.access_token;
+                                        token.put(config.token);
+                                        setDefaultHeader(config.token);
+                                        deferred.resolve(config.token);
+                                    }
+                                }
+                                else {
+                                    deferred.reject('token is undefined');
+                                }
+
                             })
                             .error(function (err) {
                                 deferred.reject(err);
@@ -78,23 +85,46 @@
                         return deferred.promise;
                     }
 
-                    function setDefaultHeader(token){
-                        $http.defaults.headers.common['Authorization'] = token || $cookieStore.get(config.tokenName);
+                    var token = {};
+                    token.get = function(){
+                        return $cookieStore.get(config.tokenName);
                     }
 
-                    function signout() {
+                    token.put = function(token){
+                        $cookieStore.put(config.tokenName, token);
+                    }
+
+                    token.remove = function(){
                         $cookieStore.remove(config.tokenName);
                     }
 
-                    function signup(fullName, email, password) {
+
+                    function setDefaultHeader(token){
+                        var t = token || $cookieStore.get(config.tokenName);
+                        if(angular.isDefined(t)){
+                            $http.defaults.headers.common['Authorization'] = t;
+                        }
+                    }
+
+                    function signout() {
+                        var deferred = $q.defer();
+                        token.remove();
+                        deferred.resolve(true);
+                        deferred.promise;
+
+                    }
+
+                    function signup(firstName, lastName, email, password, SignUpToken) {
                         return $http({
                                 method: 'POST',
-                                url: config.apiUrl + '/api/account/signUp',
+                                url: config.apiUrl + '/1/user/signup',
+                                headers: {'SignUpToken': SignUpToken},
                                 data: {
-                                    fullName: fullName,
-                                    email: email,
-                                    password: password,
-                                    confirmPassword: password
+                                  firstName: firstName,
+                                  lastName: lastName,
+                                  email: email,
+                                  password: password,
+                                  confirmPassword: password
                                 }
                             }
                         )
@@ -130,6 +160,7 @@
                     service.signup = signup;
                     service.forgotPassword = forgotPassword;
                     service.resetPassword = resetPassword;
+                    service.token = token;
 
                     return service;
                 }
